@@ -30,7 +30,7 @@
         둘 중 하나의 방법으로 작성한 뒤 <br>
         `function App(){ return(<div><Food fav="kimchi" /><Food fav="ramen" />)}`으로 작성하면<br>
         `<h1>I like kimchi</h1> <h1>I like ramen</h1>`으로 출력됨<br>
-    ![props출력](https://github.com/das0166/js2021-5/blob/master/js%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/let%ED%82%A4%EC%9B%8C%EB%93%9C%EC%99%80const%ED%82%A4%EC%9B%8C%EB%93%9C.PNG)<br>
+    ![props출력](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/props.PNG)<br>
 
 * 비슷한 컴포넌트를 많이 만들 때<br>
     이러한 경우에는 위와 같은 코드를 쓰게 되면 비효율적.<br>
@@ -48,7 +48,7 @@
             dish에 foodLike 원소가 하나씩 넘어오고 {name:'', image:''}와 같은 형태이므로 Food 컴포넌트에 dish.name, dish.iamge과 같이 음식 이름과 사진을 name props, picture props에 전달<br>
         <span style="color:Yellow">map()함수의 첫 번째 인자로 넘어가는 함수의 첫 번째 인자인 dish에는 foodLike의 원소가 하나씩 넘어간다는 점을 꼭 기억!</span><br>
     💡 <b>오류 해결 방법</b><br>
-      ![KeyWarning](https://github.com/das0166/js2021-5/blob/master/js%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/let%ED%82%A4%EC%9B%8C%EB%93%9C%EC%99%80const%ED%82%A4%EC%9B%8C%EB%93%9C.PNG)<br>
+      ![KeyWarning](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/KeyWarning.PNG)<br>
       <b>오류가 난 이유?</b><br>
       key 값이 없어서 뜬 오류! 리액트의 원소들은 유일해야 하는데 리액트 원소가 리스트에 포함되면서 유일성이 없어짐.<br>
       <b>해결 방법</b><br>
@@ -58,7 +58,7 @@
           `function App(){return (<div>{foodLike.map(dish => (<Food key={dish.id} name={dish.name} picture={dish.image} />))}</div>)}`<br>
 
     💡<b>메세지 해결 방법</b><br>
-    ![altMessage](https://github.com/das0166/js2021-5/blob/master/js%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/let%ED%82%A4%EC%9B%8C%EB%93%9C%EC%99%80const%ED%82%A4%EC%9B%8C%EB%93%9C.PNG)<br>
+    ![altMessage](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/altM.PNG)<br>
     <b>오류가 난 이유?</b><br>
     alt 속성은 시각 장애인을 위한 것. create-react-app은 세세한 경고도 해줌<br>
     <b>해결 방법</b><br>
