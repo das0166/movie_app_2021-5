@@ -6,7 +6,7 @@
     컴포넌트가 전달받은 props가 내가 원하는 값인지 확인해주는 역할<br>  
     ex) picture props를 보내야하는데 image props를 보내는 경우 오류 메세지 보여줌<br>
     💡<b>메세지 해결 방법</b><br>
-    ![ratingprops자료형경고](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/altM.PNG)<br>
+    ![ratingprops자료형경고](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/ratingprops%EC%9E%90%EB%A3%8C%ED%98%95%EA%B2%BD%EA%B3%A0.PNG)<br>
     <b>오류가 난 이유?</b><br>
     rating에 준 값은 number인데 `rating: PropTypes.string.isRequired`라고 작성해서 string 자료형이 필요하다라는 뜻<br>
     <b>해결 방법</b><br>
