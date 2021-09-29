@@ -1,5 +1,65 @@
 # 배다슬 201930216
 
+## [ 09월 29일 ]<br>
+* prop-types<br>
+    prop-types란?<br>
+    컴포넌트가 전달받은 props가 내가 원하는 값인지 확인해주는 역할<br>  
+    ex) picture props를 보내야하는데 image props를 보내는 경우 오류 메세지 보여줌<br>
+    💡<b>메세지 해결 방법</b><br>
+    ![ratingprops자료형경고](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/altM.PNG)<br>
+    <b>오류가 난 이유?</b><br>
+    rating에 준 값은 number인데 `rating: PropTypes.string.isRequired`라고 작성해서 string 자료형이 필요하다라는 뜻<br>
+    <b>해결 방법</b><br>
+    string이 아닌 number로 코드 수정<br>
+     `rating: PropTypes.number.isRequired`<br>
+     <span style="color:Yellow">❗❗<b>중요 포인트</b></span><br>
+    <b>`rating: PropTypes.string.isRequired`에서 isRequired의 뜻은?</b><br>
+    필수로 작성해야한다는 뜻<br>
+    만약, `rating: PropTypes.number`로 작성하면 ' 값을 주는 것은 선택이고 만약 값을 준다면 자료형이 number이기만 하면 된다'라는 뜻<br>
+* state<br>
+    state란?<br>
+    동적 데이터(변경될 가능성이 있는 데이터)를 다룰 때 사용하는 것<br>
+    클래스형 컴포넌트에서 사용할 수 있는 개념<br>
+    1. 클래스형 컴포넌트 기본 뼈대 작성<br>
+       `import React from 'react';`<br>
+       `class Foo extends React.Component{}`<br>
+       `export default App;`<br>
+        * 클래스형 컴포넌트가 되려면 Component 클래스를 반드시 상속받아야 한다!<br>
+    2. render() 사용<br>
+      `import React from 'react';`<br>
+       `class Foo extends React.Component{`<br>
+       `render(){`<br>
+            `return <h1>I'm a class component</h1>`<br>
+       `}}`<br>
+       `export default App;`<br>
+       -> 결과 창에 'I'm a class component'라고 출력됨<br>
+         <span style="color:Yellow"><b>❗❓ 함수형 컴포넌트와 클래스형 컴포넌트 차이</b></span><br>
+        함수형 컴포넌트는 return문이 JSX를 반환<br>
+        클래스형 컴포넌트는 render()함수가 JSX 반환 = render() 함수는 직접 실행하지 않아도 실행되는 함수<br>
+    3. state 정의후 사용<br>
+        state를 사용하려면 반드시 클래스형 컴포넌트 안에서, 소문자를 이용하여 `state={}`로 정의<br>
+        <span style="color:Yellow"><b>❗❓ 증감할 때 `this.state.count++` or `this.state.count=1`처럼 사용하면 안되는 이유?</b></span><br>
+        state를 직접 변경하는 경우에는 render()함수를 다시 실행하지 않음<br>
+        그러므로 `this.setState(current=>({count: current.count + 1}))`로 작성하면 add를 눌렀을때 current에 현재 state가 넘어가고 그 state의 count에 1을 더하게 됨<br>
+* 클래스형 컴포넌트의 일생<br>
+    * {constructor->(componentWillMount)->render:컴포넌트의 생성}->{componentDidMount:생성직후}<br>
+    * {(componentWillReceveProps):props/state의 변화}->{shouldComponentUpdate->(componentWillUpdate)->render:Update 처리}->{componentDitUpdate:처리직후}<br>
+    * {componentWillUnmount:컴포넌트제거)}<br>
+    위에 괄호로 표시한 3가지는 없어질 예정이므로 사용하지 않는 것이 좋음<br>
+        * constructor()함수<br>
+            component를 생성할 때 state 값을 초기화하거나 메서드를 사용할때 사용<br>
+            constructor()함수와 render() 함수 안에서 console.log를 찍었더니 constructor함수에 찍은 값이 먼저 나옴<br>
+        * componentDidMount() 함수<br>
+            componentDidMount함수와 render 함수 안에서 console.log를 찍었더니 render 값이 출력된 후 componentDidMount 값 출력<br>
+            <span style="color:RED"><b>constructor()함수 실행->render()함수 실행->componentDidMount()함수 실행</b></span><br>
+        * componentDidUpdate() 함수<br>
+            <span style="color:RED"><b>setState()함수 실행:버튼 누르면 실행됨->render()함수 실행:화면이 업데이트 되니까->componentDidUpdate()함수 실행</b></span><br>
+        * componentWillUnmount() 함수<br>
+            초기화할 때 사용<br>
+            렌더링이 끝난 후 componentWillUnmount()함수가 실행되는 것이라 화면에 표시가 안 됨<br>
+
+
+
 ## [ 09월 15일 ]<br>
 * JSX<br>
     JSX란?<br>
