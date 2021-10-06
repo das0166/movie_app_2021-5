@@ -8,10 +8,10 @@
             `render(){const { isLoading } = this.state; return <div>{isLoading ? 'Loading..' : 'We are ready'}</div>;}`-> 구조 분해 할당과 삼항 연산자를 활용해서 로딩상태를 알려주는 코드<br>
             `const { isLoading } = this.state;`->구조 분해 할당으로 this.state에 있는 isLoading을 우선 얻으면 항상 this.state를 입력하지 않아도 됨<br>
             `isLoading ? 'Loading..' : 'We are ready'` -> isLoading을 삼항 연산자에 활용<br>
-        ![loading화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/ratingprops%EC%9E%90%EB%A3%8C%ED%98%95%EA%B2%BD%EA%B3%A0.PNG)<br>   
+        ![loading화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/loading%ED%99%94%EB%A9%B4.PNG)<br>   
              * 로딩 현상 구현<br>
              `componentDidMount(){setTimeout(()=>{this.setState({isLoading:false});},6000)}`=>6초 후에 isLoading state를 false로 바꿔줌<br>
-              ![weareready화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/ratingprops%EC%9E%90%EB%A3%8C%ED%98%95%EA%B2%BD%EA%B3%A0.PNG)<br>
+              ![weareready화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
 
     * 영화 API를 사용해 getMovies() 함수 기다린 다음, axios.get() 함수가 반환한 데이터 잡기<br>
         `getMovies = () => {const movies = axios.get("http://yts-proxy.now.sh/list_movies.json");}` => axios.get()이 반환한 결과를 movies에 저장<br>
