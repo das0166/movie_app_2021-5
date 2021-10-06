@@ -1,5 +1,36 @@
 # 배다슬 201930216
 
+## [ 10월 06일 ]<br>
+* 영화 앱 만들기<br>
+    * 데이터 로딩하는 화면 만들기<br>
+        * isLoading state 만들기<br>
+            `state = { isLoading: true,}` -> isLoading state는 컴포넌트가 마운트되면 true이여야해서 이렇게 코드 작성<br>
+            `render(){const { isLoading } = this.state; return <div>{isLoading ? 'Loading..' : 'We are ready'}</div>;}`-> 구조 분해 할당과 삼항 연산자를 활용해서 로딩상태를 알려주는 코드<br>
+            `const { isLoading } = this.state;`->구조 분해 할당으로 this.state에 있는 isLoading을 우선 얻으면 항상 this.state를 입력하지 않아도 됨<br>
+            `isLoading ? 'Loading..' : 'We are ready'` -> isLoading을 삼항 연산자에 활용<br>
+        ![loading화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/ratingprops%EC%9E%90%EB%A3%8C%ED%98%95%EA%B2%BD%EA%B3%A0.PNG)<br>   
+             * 로딩 현상 구현<br>
+             `componentDidMount(){setTimeout(()=>{this.setState({isLoading:false});},6000)}`=>6초 후에 isLoading state를 false로 바꿔줌<br>
+              ![weareready화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/ratingprops%EC%9E%90%EB%A3%8C%ED%98%95%EA%B2%BD%EA%B3%A0.PNG)<br>
+
+    * 영화 API를 사용해 getMovies() 함수 기다린 다음, axios.get() 함수가 반환한 데이터 잡기<br>
+        `getMovies = () => {const movies = axios.get("http://yts-proxy.now.sh/list_movies.json");}` => axios.get()이 반환한 결과를 movies에 저장<br>
+        `componentDidMount(){this.getMovies();}` => componentDidMount()함수가 실행되면 this.getMovies()가 실행됨<br>
+    * getMovies()에 async 붙이고, axios.get()에 await 붙이기<br>
+         <span style="color:RED">❗axios는 네트워크를 사용하므로 느리게 동작, getMovies()함수는 시간이 필요하다는 것을 JS에게 말하기 위해 async와 await 사용</span><br>
+         `getMovies = async () => {const movies = await axios.get("http://yts-proxy.now.sh/list_movies.json");}` => JS에게 getMovies()함수는 시간이 필요하다는 것을 알려주기 위해 () 앞에 async를 붙이고 실제 시간이 필요한 대상인 axios.get() 앞에 await를 붙이면 됨.<br>
+         > async 키워드 : JS에게 getMovies()함수가 비동기라고 말해주는 것<br>
+         await 키워드 : JS에게 getMovies()함수 내부의 axios.get()의 실행 완료를 기다렸다가 끝나면 계속 진행해달라고 얘기하는 것<br>
+         <span style="color:YELLOW">💡 API에서 데이터를 받아오는 axios.get()을 실행하려면 시간이 필요하고, 이 사실을 JS에게 알려야만 데이터를 잡을 수 있으므로 async와 await를 사용한 것</span><br>
+
+    * 영화 데이터 화면에 그리기<br>
+        console.log를 찍으면 data->data->movies 순서대로 객체에 접근하면 원하는 데이터 추출 가능<br>
+        첫번째 방법: 점 연산자로 객체에 접근<br>
+          `getMovies = async () => {const movies = await axios.get("http://yts-proxy.now.sh/list_movies.json");console.log(movies.data.data.movies);}`
+        두번째 방법: 구조 분해 할당 사용<br>
+        `getMovies = async () => {const {data: {data: {movies },},} = await axios.get("http://yts-proxy.now.sh/list_movies.json");console.log(movies);}`     
+
+
 ## [ 09월 29일 ]<br>
 * prop-types<br>
     prop-types란?<br>
