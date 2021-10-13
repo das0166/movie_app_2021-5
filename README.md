@@ -21,10 +21,10 @@
     * ReactMovie 컴포넌트에 props 전달<br>
          `return <div>{isLoading ? 'Loading..' : movies.map((movie)=>{console.log(movie); return <ReactMovie id={movie.id} year={movie.year} title={movie.title} summary={movie.summary} poster={movie.medium_cover_image} />;})}</div>`<br>
          poster={movie.medium_cover_image}로 적는 이유 : image인데 string으로 작성한 이유 : url 주소가 들어가기때문에<br>
-        ![영화명결과값](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
+        ![영화명결과값](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/%EC%98%81%ED%99%94%EB%AA%85%EA%B2%B0%EA%B3%BC%EA%B0%92.PNG)<br>
 
         💡<b>메세지 해결 방법</b><br>
-         ![prop 문제](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
+         ![prop 문제](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/prop%20%EB%AC%B8%EC%A0%9C.PNG)<br>
         <b>오류가 난 이유?</b><br>
         key값이 없어서 생김<br>
         <b>해결 방법</b><br>
@@ -41,7 +41,7 @@
 
             
         💡<b>메세지 해결 방법</b><br>
-         ![class속성, genre에 대한 경고](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
+         ![class속성, genre에 대한 경고](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/class%EC%86%8D%EC%84%B1%2C%20genres%EC%97%90%20%EB%8C%80%ED%95%9C%20%EA%B2%BD%EA%B3%A0.PNG)<br>
         <b>오류가 난 이유?</b><br>
         1.JSX에 사용한 속성 중 class 속성이 className으로 사용되지 않았음<br>
         2. genre prps가 필수인데 RealMovie 컴포넌트에 undefined로 넘어왔다는 뜻<br>
