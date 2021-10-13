@@ -1,5 +1,55 @@
 # 배다슬 201930216
 
+## [ 10월 13일 ]<br>
+`this.setState({movies,movies})`에서 처음있는 movies는 movies state이고 뒤에 있는 것은 axios.get()의 결과를 저장할 수 있는 변수임. 또한 키와 대입할 변수의 이름이 같으므로  `this.setState({movies})`로 축약 가능<br>
+* 화면에 출력되는 값 바꾸는 방법<br>
+    `{isLoading ? 'Loading..' : 'We are ready'}`로 되어있음.<br>
+    화면에 Loading 만 보이는 이유는 `state={isLoading: true, movies: []};`로 되어 있었기때문에 isLoading: true 값인 Loading만 보였던것<br>
+    영화 데이터를 가져올때 로딩 상태를 변경해야하기때문에 movies state에 `this.setState ({movies, isLoading: false});`로 작성<br>
+* RealMovie 컴포넌트 만들기<br>
+    필요한 것들을 RealMovie 컴포넌트에 입력<br>
+    `id: PropTypes.number.isRequired` : 자료형이 number이고 반드시 있어야하는 id 라는 뜻<br>  
+* 구조 분해 할당으로 this.state에 있는 movies를 얻은 다음, movie   컴포넌트에 movies.map()을 사용<br>
+`render(){const{isLoading, movies}=this.state;`<br>
+`return <div>{isLoading ? 'Loading..' : movies.map()}</div>`<br>
+* 영화 데이터 출력하는 코드 작성<br>
+    * [console]탭에 영화 데이터 출력<br>
+        `return <div>{isLoading ? 'Loading..' : movies.map((movie)=>{console.log(movie); return;})}</div>`<br>
+    * ReactMovie 컴포넌트 반환<br>
+        `import RealMovie from './RealMovie';`<br>
+         `return <div>{isLoading ? 'Loading..' : movies.map((movie)=>{console.log(movie); return <ReactMovie />;})}</div>`<br>
+    * ReactMovie 컴포넌트에 props 전달<br>
+         `return <div>{isLoading ? 'Loading..' : movies.map((movie)=>{console.log(movie); return <ReactMovie id={movie.id} year={movie.year} title={movie.title} summary={movie.summary} poster={movie.medium_cover_image} />;})}</div>`<br>
+         poster={movie.medium_cover_image}로 적는 이유 : image인데 string으로 작성한 이유 : url 주소가 들어가기때문에<br>
+        ![영화명결과값](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
+
+        💡<b>메세지 해결 방법</b><br>
+         ![prop 문제](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
+        <b>오류가 난 이유?</b><br>
+        key값이 없어서 생김<br>
+        <b>해결 방법</b><br>
+        `return <div>{isLoading ? 'Loading..' : movies.map((movie)=>{console.log(movie); return <ReactMovie key={movie.id} id={movie.id} year={movie.year} title={movie.title} summary={movie.summary} poster={movie.medium_cover_image} />;})}</div>`<br>
+
+        * CSS<br>
+            * JSX의 가장 바깥쪽은 section 엘리먼트로 감싸기<br>
+            * class명은 "loader__text"보다 "loader-text"로 작성하는게 좋음<br>
+            `<img src={poster} alt={true} title={title} />`<br>
+        
+        * RealMovie 컴포넌트에 장르 추가<br>
+            `genres:PropTypes.arrayOf(PropTypes.string).isRequired`추가<br>
+            arrayOf(PropTypes.string) : 문자열을 원소로 하는 배열 의미<br>
+
+            
+        💡<b>메세지 해결 방법</b><br>
+         ![class속성, genre에 대한 경고](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
+        <b>오류가 난 이유?</b><br>
+        1.JSX에 사용한 속성 중 class 속성이 className으로 사용되지 않았음<br>
+        2. genre prps가 필수인데 RealMovie 컴포넌트에 undefined로 넘어왔다는 뜻<br>
+        <b>해결 방법</b><br>
+        1. class속성을 className으로 변경<br>
+        2. Movie.js에 `genres={movie.genres}` 추가하면 없어짐<br>
+
+
 ## [ 10월 06일 ]<br>
 * 영화 앱 만들기<br>
     * 데이터 로딩하는 화면 만들기<br>
@@ -11,6 +61,7 @@
         ![loading화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/loading%ED%99%94%EB%A9%B4.PNG)<br>   
              * 로딩 현상 구현<br>
              `componentDidMount(){setTimeout(()=>{this.setState({isLoading:false});},6000)}`=>6초 후에 isLoading state를 false로 바꿔줌<br>
+             
               ![weareready화면](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/weareready%ED%99%94%EB%A9%B4.PNG)<br>
 
     * 영화 API를 사용해 getMovies() 함수 기다린 다음, axios.get() 함수가 반환한 데이터 잡기<br>
