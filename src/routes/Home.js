@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import RealMovie from './RealMovie';
-import './Movie.css';
+import RealMovie from '../components/Movie';
+import './Home.css';
 
-class Movie extends React.Component{
+class Home extends React.Component{
     state={
         isLoading: true,
         movies: []
@@ -22,13 +22,13 @@ class Movie extends React.Component{
     render(){
         const { isLoading, movies } = this.state;
         return (
-            <section class="container">
+            <section className="container">
             {isLoading ? (
-                <div class="loader">
-                    <span class="loader-text">'Loading...'</span>
+                <div className="loader">
+                    <span className="loader-text">'Loading...'</span>
                 </div>
                 ) : (
-                <div class="movies">
+                <div className="movies">
                 {movies.map(movie => (
                 <RealMovie
                 key={movie.id}
@@ -48,4 +48,4 @@ class Movie extends React.Component{
     }
 }
 
-export default Movie;
+export default Home;

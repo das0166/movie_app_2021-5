@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
-import Movie from './Movie'
+// import Movie from './Movie'
 // import Foo from './Foo'
-// import App from './App'
+import App from './App'
 
-ReactDOM.render(<Movie />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
