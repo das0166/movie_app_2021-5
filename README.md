@@ -1,5 +1,51 @@
 # 배다슬 201930216
 
+## [ 10월 27일 ]<br>
+💡<b>메세지 해결 방법</b><br>
+![className으로변경](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/className%EC%9C%BC%EB%A1%9C%20%EB%B3%80%EA%B2%BD.PNG)<br>
+<b>오류가 난 이유?</b><br>
+HTML의 class와 자바스크립트의 class라는 이름이 겹치면 리액트가 혼란스러울 수 있기 때문<br>
+<b>해결 방법</b><br>
+class라고 적혀있는 것을 className으로 변경<br> 
+
+* li tag에 key props 추가<br>
+ genre에는 key값으로 사용하기에 적당한 id값 같은 것이 없음.<br>
+ map()함수에는 2번째 매개변수를 지정할 경우 배열의 index
+값을 반환해 주는 기능이 있음<br>
+=>`genres.map((genre) => { return (<li className="movie-genre"> ....}` ->`genres.map((genre, index) => { return (<li ket={index} className="movie-genre"> ....}`로 변경<br>
+index를 추가함으로써 key props로 활용<br>
+* 시놉시스 글자 수 제한하기<br>
+`summary.slice(0,180)`를 하게되면 summary에 들어가는 글자 첫번째(0)부터 180개의 글자로 제한한다. 즉, 첫번째 글자부터 179번째 글자까지 작성되어진다.<br>
+
+* 라우터 이용하기<br>
+라우터란?<br>
+화면 이동을 시켜주는 장치 => 사용자가 입력한 url을 통해 특정 컴포넌트를 부름<br>
+ex)localhost:3000/home 이라고 입력하면 home 컴포넌트로 불러주는 것이 라우터의 역할<br>
+    * 라우터 사용법<br>
+    `import {HashRouter, Route} form 'react-router-dom'`<br>
+    `function App() { return (<HashRouter> <Route /> </HashRouter>)}`이라고 입력하면 주소창에 #/이 추가되면서 실행이 됨<br>
+    ![라우터실행](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%8B%A4%ED%96%89.PNG)<br>
+    * Route 컴포넌트에 path, component props 추가<br>
+    About 컴포넌트를 임포트한 뒤, path, component props에 url과 About 컴포넌트 전달<br>
+    `function App() { return (<HashRouter> <Route path="/about" component={About} /> </HashRouter>)}`로 작성 뒤 about컴포넌트로 이동했을때 보여줄 내용 About.js에 작성하기<br>
+    localhost:3000/#에 path props로 지정했던 값 /about을 붙여서 접속하기<br>
+    ![About컴포넌트실행](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/about%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%8B%A4%ED%96%89.PNG)<br>
+    * Home컴포넌트를 위한 Route 컴포넌트 추가<br>
+    App 컴포넌트에 Home 컴포넌트를 임포트하고, 또 다른 Route 컴포넌트 추가<br>
+    `function App() { return (<HashRouter> <Route path="/" component={Home} /> <Route path="/about" component={About} /> </HashRouter>)}`<br>
+    localhost:3000/#와 localhost:3000/#/about 둘 다 Movie 컴포넌트 출력됨<br>
+    ![두곳에서Movie컴포넌트실행](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/%EB%91%90%EA%B3%B3%EC%97%90%EC%84%9CMovie%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%8B%A4%ED%96%89.PNG)<br
+    span style="color:Yellow"><b>❗❓ About 컴포넌트에도 Movie 컴포넌트가 출력되는 이유는?</b></span><br>
+    라우터는 사용자가 /home/introduction에 접속하면 /, /home, /home/introduction 순서로 path props가 있는지를 찾음. 그런데 이들 모두가 path props를 갖고 있기 때문에 introduction에 접속하면 Home에 입력한 것과 introduction에 입력한 것이 모두 보임<br>
+    같은 원리로 /about에 접속하면 /, /about 순서로 path props를 찾으므로 Home, About 컴포넌트가 모두 그려지게 됨<br>
+    <b>해결 방법</b><br>
+    exact props(Route 컴포넌트가 path props와 정확하게 일치하는 url에만 반응하도록 만들어줌)를 추가하면 됨.<br>
+    `function App() { return (<HashRouter> <Route path="/" exact={true} component={Home} /> <Route path="/about" component={About} /> </HashRouter>)}`<br>
+    
+
+
+
+
 ## [ 10월 13일 ]<br>
 `this.setState({movies,movies})`에서 처음있는 movies는 movies state이고 뒤에 있는 것은 axios.get()의 결과를 저장할 수 있는 변수임. 또한 키와 대입할 변수의 이름이 같으므로  `this.setState({movies})`로 축약 가능<br>
 * 화면에 출력되는 값 바꾸는 방법<br>
