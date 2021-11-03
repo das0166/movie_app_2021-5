@@ -1,5 +1,58 @@
 # 배다슬 201930216
 
+## [ 11월 03일 ]<br>
+* Navigation 만들기<br>
+    * Home과 About 버튼을 눌렀을때 적절한 화면 보여주기<br>
+    `<a href="/">Home</a><a href="/about"About</a>`로 코드를 작성하게 되면 링크를 누를때마다 리액트가 죽고, 화면 전체가 새로 고침됨.<br>
+    ❗❓이는 a 엘리먼트 특징 때문.(a href 속성은 페이지 전체를 다시 그림) => 이를 해결하기 위해선 a href 대신 `<Link to="/">Home</Link><Link to="/about">About</Link>`를 하게 되면 화면 전체가 새로 고침되지 않음.<br>
+
+* 영화 상세 정보 기능 만들기<br>
+    ![routeprops](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/routeprops.PNG)<br>
+    react-router-dome에서 Route 컴포넌트가 그려줄 컴포넌트에 전달한 props값<br>
+    Route 컴포넌트가 그려줄 컴포넌트에는 항상 이 props가 전달되고, 이 props에 원하는 데이터를 담아보내줄 수 있음<br>
+    * route props에 데이터 담아 보내기<br>
+        route props에 데이터를 담아 보내기 위해 Navigation 컴포넌트에 있는 Link컴포넌트의 to props의 구조 바꾸기<br>
+    `<Link to={{ pathname: '/about', state: { fromNavigation: true}}}>About</Link>`로 바꾸게 되면 to props에 객체를 전달하게 됨. pathname은 URL, state는 route props에 보내줄 데이터 의미<br>
+    * Movie 컴포넌트에 Link 컴포넌트 추가<br>
+    Movie 컴포넌트에 Link 컴포넌트를 입력하고 Link 컴포넌트에 props를 작성하는 코드인 `<Link to={{pathname:'/movie-detail',state: {year, title,summary, poster, genres},}}>`를 넣으면 영화 카드를 누르면 /movie-detail로 이동하게 됨<br>
+    * Detail 컴포넌트 만들기<br>
+    Detail 컴포넌트에서 Link 컴포넌트가 보내준 영화 데이터를 확인할 수 있게 하기<br>
+    Detail을 출력해주는 Route 컴포넌트를 App.js에 추가하기 위해 `<Route path="/movie-detail" component={Detail} />`를 작성하기<br>
+    ![Detail컴포넌트](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/detail%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8.PNG)<br>
+    영화 카드를 눌러 /movie-detail로 이동하면 Detail 컴포넌트가 출력하고 있는 hello라는 문장이 보이고 console을 보면 Movie 컴포넌트에서 Link 컴포넌트를 통해 보내준 데이터가 있음<br>
+
+* 리다이렉트 기능 만들기<br>
+    * Detail 컴포넌트 클래스형 컴포넌트로 변경<br>
+    Detail 컴포넌트를 함수형에서 클래스형 컴포넌트로 변경한 다음 location, history 키를 구조 분해 할당 함<br>
+    => location키의 state 키가 비어있음<br>
+    * push() 함수 사용<br>
+    location.state가 undefined인 경우 history.push("/")를 실행하도록 코드 작성<br>
+    `if(location.state === undefined) {history.push('/');}`<br>
+    * 영화 제목 출력하기<br>
+    ```jsx
+    const { location } = this.props;
+        return <span>{location.state.title}</span>
+    ```
+    Movie 컴포넌트로부터 전달 받은 영화 데이터가 location.state에 있음.<br>
+    * location.state 확인하기<br>
+    ❗❓ /movie-detail로 이동하면 오류 발생하는 이유?
+    detail컴포넌트는 render() -> componentDidMount() 순서로 함수를 실행하기때문.<br>
+    ❗❗해결방법<br>
+    ```jsx
+    render() {
+        const { location } = this.props;
+        if (location.state) {
+        return <span>{location.state.title}</span>
+        } else {
+            return null;
+        }
+    }
+    ```
+    render() 함수에 componentDidMount() 생명주기 함수에 작성한 리다이렉트 코드 추가<br>
+
+
+    
+
 ## [ 10월 27일 ]<br>
 💡<b>메세지 해결 방법</b><br>
 ![className으로변경](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/className%EC%9C%BC%EB%A1%9C%20%EB%B3%80%EA%B2%BD.PNG)<br>
