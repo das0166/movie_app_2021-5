@@ -1,5 +1,58 @@
 # 배다슬 201930216
 
+## [ 11월 10일 ]<br>
+* movie app 배포하기<br>
+    1. 설치하기 전 package.json 수정하기<br>
+        - scripts에 depoly와 predeploy 추가하고
+        ```jsx
+        "scripts": {
+            "start": "react-scripts start",
+            "build": "react-scripts build",
+            "deploy": "gh-pages -d build",
+            "predeploy": "npm run build"
+        },
+        ```
+        마지막 줄에 github에 올려진 것을 사용하여 배포하기 위해 github에 올린 이름과 동일하게 homepage에 작성하기<br>
+        ```jsx
+        "homepage": "https://das0166.github.io/movie_app_2021-5"
+        ```
+    2. `npm install gh-pages`을 사용하여 gh-pages 설치하기<br>
+    3. `git remote -v`을 사용하여 깃허브 주소 확인하기
+    3. `npm run deploy`을 사용하여 배포하기<br>
+    4. 위의 순서를 진행하게 되면 build 폴더가 생성되며 https://das0166.github.io/movie_app_2021-5에 들어가면 movie app이 실행됨<br>
+    <span style="color:Red"><b>❗❗ 순서대로 했는데도 오류가 생긴다면 확인해봐야할 것(404오류나 loading 화면만 지속될 경우)</b></span><br>
+        1. 마지막줄인 "homepage": "https://das0166.github.io/movie_app_2021-5"와 github에 올린 저장소 이름과 동일한지 확인해보기<br>
+        2. package.json에 작성한 코드 중 deploy와 predeploy 순서 확인해보기<br>
+            ```jsx
+            "scripts": {
+            "start": "react-scripts start",
+            "build": "react-scripts build",
+            "deploy": "gh-pages -d build",
+            "predeploy": "npm run build"
+            },
+            ```
+        3. build 폴더 안에 있는 index.html코드가 폴더 주소를 제대로 따라가고 있는지 확인해보기<br>
+        4. `git remote -v`을 사용하여 맞게 지정되어 있는지 확인해보기<br>
+
+* package.json과 package-lock.json 차이<br>
+    * 컴포넌트 설치 오류 등 원인 규명이 되지 않은 오류가 있을 때<br>
+        1. `npm cache clean--force`<br>
+        2. `npm rebuild`<br>
+        3. `rm-rf node_modules`<br>
+        4. `npm install`<br>
+        * 3번째 rm 명령이 실행되지 않으면 shell을 관리자 권한으로 실행 후 다시 시도하기<br>
+    * package.json과 package-lock.json 차이<br>
+        1. package.json은 패키지 의존성 관리 파일<br>
+        2. 협업 등 팀원들 각자의 컴퓨터에 같은 패키지를 설치하여 동일한 개발환경을 구성해야 할때 package.json 사용<br>
+        3. 만일 버전이 다르게 설치되는 경우 앱이 동작하지 않는 경우<br>
+            1. `$ npm –version`을 이용하여 npm버전이 일치한지 확인<br>
+            2. node_modules 폴더 삭제 
+            3. npm cache 삭제
+            4. `$ npm install`을 이용하여 node_modules 재설치<br>
+        4. package.json의 경우는 version range를 사용 ex) "express": "~4.16.1"<br>
+        5. package-lock.json은 package.json보다 더 정확한 버전이 기록되어 있음<br>
+        6. npm install 을 진행하더라도 서로 다른 node_modules트리를 생성하는 경우가 발생 -> npm의 버전이 다른 경우 npm 알고리즘의 차이가 나기 때문 -> 문제가 발생하면 npm버전부터 확인 후 package-lock.json파일이 있으면 npm install명령은 package-lock.json 을 사용하여 node-modules 를 생성<br>
+
 ## [ 11월 03일 ]<br>
 * Navigation 만들기<br>
     * Home과 About 버튼을 눌렀을때 적절한 화면 보여주기<br>
@@ -87,8 +140,8 @@ ex)localhost:3000/home 이라고 입력하면 home 컴포넌트로 불러주는 
     App 컴포넌트에 Home 컴포넌트를 임포트하고, 또 다른 Route 컴포넌트 추가<br>
     `function App() { return (<HashRouter> <Route path="/" component={Home} /> <Route path="/about" component={About} /> </HashRouter>)}`<br>
     localhost:3000/#와 localhost:3000/#/about 둘 다 Movie 컴포넌트 출력됨<br>
-    ![두곳에서Movie컴포넌트실행](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/%EB%91%90%EA%B3%B3%EC%97%90%EC%84%9CMovie%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%8B%A4%ED%96%89.PNG)<br
-    span style="color:Yellow"><b>❗❓ About 컴포넌트에도 Movie 컴포넌트가 출력되는 이유는?</b></span><br>
+    ![두곳에서Movie컴포넌트실행](https://github.com/das0166/movie_app_2021-5/blob/master/%EC%97%85%EB%A1%9C%EB%93%9C%EC%9E%90%EB%A3%8C/%EB%91%90%EA%B3%B3%EC%97%90%EC%84%9CMovie%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%8B%A4%ED%96%89.PNG)<br>
+    <span style="color:Yellow"><b>❗❓ About 컴포넌트에도 Movie 컴포넌트가 출력되는 이유는?</b></span><br>
     라우터는 사용자가 /home/introduction에 접속하면 /, /home, /home/introduction 순서로 path props가 있는지를 찾음. 그런데 이들 모두가 path props를 갖고 있기 때문에 introduction에 접속하면 Home에 입력한 것과 introduction에 입력한 것이 모두 보임<br>
     같은 원리로 /about에 접속하면 /, /about 순서로 path props를 찾으므로 Home, About 컴포넌트가 모두 그려지게 됨<br>
     <b>해결 방법</b><br>
