@@ -1,4 +1,148 @@
 # 배다슬 201930216
+## [ 11월 17일 ]<br>
+
+* React의 특징<br>
+    * 상호작용이 많은 UI개발에 적합<br>
+    * 컴포넌트 로직은 JavaScript로 작성<br>
+    * 캡슐화된 컴포넌트로 개발되어 재사용이 용이<br>
+    * DOM과는 별개로 상태 관리 가능<br>
+    * 기술 스택의 나머지 부분에는 관여 X<br>
+    * 기존 코드와 별개로 개발 가능<br>
+    * React Native를 이용하면 모바일 앱도 개발 가능<br>
+
+> React 공식 사이트 introduction에 있는 4가지 기본 예제 중심으로 설명한 자료 사이트 : https://ko.reactjs.org/
+
+* 첫번째 예제- 간단한 컴포넌트<br>
+    * 데이터를 입력받아 화면에 표시할 내용을 반환하는 역할을 하는 것 : React 컴포넌트가 구현하는 메서드 render()<br>
+    * 컴포넌트로 전달된 데이터는 render() 안에서 this.props를 통해 접근 가능<br>
+    * React를 개발하는데 반드시 JSX를 써야 하는 것은 아님<br>
+    * JSX를 JavaScript로 확인하고 싶을 경우 Babel REPL을 사용<br>
+
+* 두번째 예제 - 상태를 가지는 컴포넌트(state가 포함된 component)<br>
+    * 동적인 데이터는 this.state로 접근 가능<br>
+    * state가 변하면 render()메소드가 다시 호출되어 화면이 갱신<br>
+    * super는 부모 클래스를 의미하는 것으로 부모클래스의 생성자를 사용하겠다는 선언
+    임과 동시에 this를 사용하기 위한 것, super를 호출하기 전에 this를 사용 불가<br>
+    ```jsx
+    class Timer extends React.Component {
+    constructor(props) {
+        super(props); //super(props)를 사용하는 이유 : React의 class는 모두 React.Component에서 상속
+        this.state = { seconds: 0 }; //1.초기의 state를 0으로 출력
+    }
+
+    tick() {
+        this.setState(state => ({
+        seconds: state.seconds + 1
+        })); 
+    } //3.호출된 tick()메소드는 setState()를 통해 state를 1씩 증가
+
+    componentDidMount() {
+        this.interval = setInterval(() => this.tick(), 1000);
+    } //2.이후 componentDidMount()메소드로 1초에 한번씩 tick()메소드를 호출
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    render() {
+        return (
+        <div>
+            Seconds: {this.state.seconds}
+        </div>
+        );
+    }
+    }
+
+    ReactDOM.render(
+    <Timer />,
+    document.getElementById('timer-example') //화면이 켜져있는 동안 초를 카운트하는 Timer앱
+    );
+    ```
+    
+* 세번째 예제 - Todo 리스트 만들기<br>
+    * TodoApp과 TodoList 두개의 컴포넌트 구성<br>
+    * handleChange는 키보드 입력마다 react의 state를 갱신->element에서 확인<br>
+    * 시간으로 보는 동작<br>
+        유저 입력 > handleChange > react의 state 갱신 > form element가 React state 참조
+    * render() 메소드에서 초기 렌더링을 실행
+    * onChange를 통해 input에 입력되는 값으로 state 상태 변경 준비
+    ```jsx
+    class TodoApp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { items: [], text: '' };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    render() {
+        return (
+        <div>
+            <h3>TODO</h3>
+            <TodoList items={this.state.items} />
+            <form onSubmit={this.handleSubmit}>
+            <label htmlFor="new-todo">
+                What needs to be done?
+            </label> //htmlFor : input과 연결을 위한 id 값
+            <input
+                id="new-todo"
+                onChange={this.handleChange}
+                value={this.state.text}
+            /> //input area에 이벤트 발생하면 handleChange(e)가 동작하여 State의 text 값 변경
+            <button>
+                Add #{this.state.items.length + 1}
+            </button> // ADD #x 버튼을 클릭하면 리스트의 length에 1을 더해서 버튼에 출력
+            </form>
+        </div>
+        );
+    }
+
+    handleChange(e) {
+        this.setState({ text: e.target.value });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        if (this.state.text.length === 0) {
+        return;
+        }
+        const newItem = {
+        text: this.state.text,
+        id: Date.now()
+        };
+        this.setState(state => ({
+        items: state.items.concat(newItem),
+        text: ''
+        })); //  입력된 값은 "text: ""에 임시 저장
+    }
+    }
+
+    class TodoList extends React.Component {
+    render() {
+        return (
+        <ul>
+            {this.props.items.map(item => (
+            <li key={item.id}>{item.text}</li>
+            ))}
+        </ul>
+        );
+    }
+    }
+
+    ReactDOM.render(
+    <TodoApp />,
+    document.getElementById('todos-example')
+    );
+    ```
+    <span style="color:Yellow"><b>❗❓ handleSubmit(e)에서 e.preventDefault() 메소드를 사
+    용하는 이유</b></span><br>
+    * 브라우저에서 양식을 제출할 때는 기본적으로 브라우저의 새로 고침이 발생하는데, React나 SPA(single page application)의 경우 필요 없는 동작임으로 이를 방지하기위해 사용<br>
+    * stae.text의 길이가 0이면 아무 것도 반환하지 않음<br>
+
+* 네번째 예제 - 외부 플러그인을 사용하는 컴포넌트(외부컴포넌트를 사용한 markdown 에디터)<br>
+    * 외부 플러그인은 Remarkable을 사용함으로 CDN으로 링크 추가<br>
+        * remarkable.js로 검색하고 CDN사이트 2곳 중 한 곳에서 링크를 복사해 추가(https://github.com/jonschlinkert/remarkable)<br>
+    * remarkable을 사용해 ``<textarea>``의 값을 실시간으로 변환<br>
 
 ## [ 11월 10일 ]<br>
 * movie app 배포하기<br>
