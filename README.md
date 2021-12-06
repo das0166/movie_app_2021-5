@@ -1,4 +1,126 @@
 # 배다슬 201930216
+## [ 12월 01일 ]<br>
+* State and Lifecycle<br>
+    * 함수에서 클래스로 변환하기<br>
+        <b>다섯 단계로 Clock과 같은 함수 컴포넌트를 클래스로 변환하기</b><br>
+        1. React.Component를 확장하는 동일한 이름의 class를 생성<br>
+        2. render()라고 불리는 빈 메서드를 추가<br>
+        3. 함수의 내용을 render() 메서드 안으로 옮김<br>
+        4. render() 내용 안에 있는 props를 this.props로 변경
+        5. 남아있는 빈 함수 선언을 삭제<br>
+        ```jsx
+            class Clock extends React.Component {
+                render() {
+                    return (
+                    <div>
+                        <h1>Hello, world!</h1>
+                        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+                    </div>
+                    );
+                }
+            }
+        ```
+        * Clock은 함수가 아닌 클래스로 정의<br>
+        * render 메서드는 업데이트가 발생할 때마다 호출되지만, 같은 DOM 노드로 <Clock />을 렌더링하는 경우 Clock 클래스의 단일 인스턴스만 사용됨. 이것은 로컬 state와 생명주기 메서드와 같은 부가적인 기능을 사용할 수 있게 해줌<br>
+    * 클래스에 로컬 State 추가하기<br>
+        <b>세 단계에 걸쳐서 date를 props에서 state로 이동해 보기</b><br>
+        1. render() 메서드 안에 있는 this.props.date를 this.state.date로 변경<br>
+        2. 초기 this.state를 지정하는 class constructor를 추가<br>
+        3. <Clock /> 요소에서 date prop을 삭제<br>
+        ```jsx
+        class Clock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {date: new Date()};
+            }
+
+            render() {
+                return (
+                <div>
+                    <h1>Hello, world!</h1>
+                    <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+                </div>
+                );
+            }
+            }
+
+            ReactDOM.render(
+            <Clock />,
+            document.getElementById('root')
+            );
+        ```
+        * 클래스 컴포넌트는 항상 props로 기본 constructor를 호출<br>
+    * 생명주기 메서드를 클래스에 추가하기<br>
+        * 마운팅 : Clock이 처음 DOM에 렌더링 될 때마다 타이머를 설정하는 것<br>
+        * 언마운팅 : Clock에 의해 생성된 DOM이 삭제될 때마다 타이머를 해제하는 것<br>
+        ```jsx
+        class Clock extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {date: new Date()};
+        }
+
+        componentDidMount() {
+            this.timerID = setInterval(
+            () => this.tick(),
+            1000
+            );
+        }
+
+        componentWillUnmount() {
+            clearInterval(this.timerID);
+        }
+
+        tick() {
+            this.setState({
+            date: new Date()
+            });
+        }
+
+        render() {
+            return (
+            <div>
+                <h1>Hello, world!</h1>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+            );
+        }
+        }
+
+        ReactDOM.render(
+        <Clock />,
+        document.getElementById('root')
+        );
+        ```
+        1. <Clock />가 ReactDOM.render()로 전달되었을 때 React는 Clock 컴포넌트의 constructor를 호출 후 현재 시각이 포함된 객체로 this.state를 초기화.<br>
+        2. React는 Clock 컴포넌트의 render() 메서드를 호출 후 Clock의 렌더링 출력값을 일치시키기 위해 DOM을 업데이트<br>
+        3. Clock 출력값이 DOM에 삽입되면, React는 componentDidMount() 생명주기 메서드를 호출. 그 안에서 Clock 컴포넌트는 매초 컴포넌트의 tick() 메서드를 호출하기 위한 타이머를 설정하도록 브라우저에 요청.<br>
+        4. 매초 브라우저가 tick() 메서드를 호출. 그 안에서 Clock 컴포넌트는 setState()에 현재 시각을 포함하는 객체를 호출하면서 UI 업데이트 진행. React는 state가 변경된 것을 인지하고 화면에 표시될 내용을 알아내기 위해 render() 메서드를 다시 호출. 이 때 render() 메서드 안의 this.state.date가 달라지고 렌더링 출력값은 업데이트된 시각을 포함. React는 이에 따라 DOM을 업데이트.<br>
+        5. Clock 컴포넌트가 DOM으로부터 한 번이라도 삭제된 적이 있다면 React는 타이머를 멈추기 위해 componentWillUnmount() 생명주기 메서드를 호출.<br>
+    * State를 올바르게 사용하기<br>
+        1. 직접 State를 수정 X<br>
+            `this.state.comment = 'Hello';`는 컴포넌트를 다시 렌더링하지 않는 대신 setState()를 사용. `this.setState({comment: 'Hello'});` constructor은 this.state를 지정할 수 있는 유일한 공간임<br>
+        2. State 업데이트는 비동기적일 수도 있음<br>
+            `this.setState({counter: this.state.counter + this.props.increment,});`로 하면 카운터 업데이트에 실패할 수 있음. 그러므로 함수를 인자로 사용하는 다른 형태의 setState()를 사용하는 것이 좋음.<br>
+            1. `this.setState((state, props) => ({counter: state.counter + props.increment}));` - 화살표 함수로 사용하는 방법<br>
+            2. `this.setState(function(state, props) { return { counter: state.counter + props.increment};});`<br>
+        3. State 업데이트는 병합됨<br>
+            setState()를 호출할 때 React는 제공한 객체를 현재 state로 병합<br>
+    * 데이터는 아래로 흐름<br>
+        * state가 소유하고 설정한 컴포넌트 이외에는 어떠한 컴포넌트에도 접근 불가<br>
+        * 컴포넌트는 자신의 state를 자식 컴포넌트에 props로 전달할 수 있음<br>
+        * React 앱에서 컴포넌트가 유상태 또는 무상태에 대한 것은 시간이 지남에 따라 변경될 수 있는 구현 세부 사항으로 간주<br>
+        * 유상태 컴포넌트 안에서 무상태 컴포넌트를 사용할 수 있으며, 그 반대 경우도 마찬가지로 사용할 수 있음<br>
+* 이벤트 처리하기<br>
+    * React 엘리먼트에서 이벤트를 처리하는 방식은 DOM 엘리먼트에서 이벤트를 처리하는 방식과 매우 유사함.<br>
+    * 차이점<br>
+        1. React의 이벤트는 소문자 대신 캐멀 케이스(camelCase)를 사용<br>
+        2. JSX를 사용하여 문자열이 아닌 함수로 이벤트 핸들러를 전달<br>
+        3. React에서는 false를 반환해도 기본 동작을 방지할 수 없음. 반드시 preventDefault를 명시적으로 호출<br>
+
+
+
+
 ## [ 11월 17일 ]<br>
 
 * React의 특징<br>
