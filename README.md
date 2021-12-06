@@ -117,6 +117,73 @@
         1. React의 이벤트는 소문자 대신 캐멀 케이스(camelCase)를 사용<br>
         2. JSX를 사용하여 문자열이 아닌 함수로 이벤트 핸들러를 전달<br>
         3. React에서는 false를 반환해도 기본 동작을 방지할 수 없음. 반드시 preventDefault를 명시적으로 호출<br>
+    * 이벤트 핸들러에 인자 전달<br>
+        ```jsx
+        <button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+        <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+        ```
+        두 줄은 동등하며 각각 화살표 함수와 Function.prototype.bind를 사용<br>
+        두 경우 모두 React 이벤트를 나타내는 e 인자가 ID 뒤에 두 번째 인자로 전달. 화살표 함수를 사용하면 명시적으로 인자를 전달해야 하지만 bind를 사용할 경우 추가 인자가 자동으로 전달됨.<br>
+* 조건부 렌더링<br>
+    JavaScript에서의 조건 처리와 같이 동작<br>
+    if나 조건부 연산자와 같은 JavaScript 연산자를 현재 상태를 나타내는 엘리먼트를 만드는 데에 사용<br>
+    * 엘리먼트 변수<br>
+        엘리먼트를 저장하기 위해 변수를 사용<br> 
+        출력의 다른 부분은 변하지 않은 채로 컴포넌트의 일부를 조건부로 렌더링 할 수 있음 <br>
+        * 논리 && 연산자로 If를 인라인으로 표현하기<br>
+            * JSX 안에는 중괄호를 이용해서 표현식을 포함 할 수 있음<br> 
+            * 그 안에 JavaScript의 논리 연산자 &&를 사용하면 쉽게 엘리먼트를 조건부로 넣을 수 있음<br>
+            * JavaScript에서 true && expression은 항상 expression으로 평가되고 false && expression은 항상 false로 평가됨. 따라서 && 뒤의 엘리먼트는 조건이 true일때 출력. 조건이 false라면 React는 무시하고 건너뜀.<br>
+            <b>✨ falsy 표현식을 반환하면 여전히 && 뒤에 있는 표현식은 건너뛰지만 falsy 표현식이 반환된다는 것에 주의!!✨</b>
+        * 조건부 연산자로 If-Else구문 인라인으로 표현하기<br>
+            * 엘리먼트를 조건부로 렌더링하는 다른 방법은 조건부 연산자인 condition ? true: false를 사용하는 것<br>
+        * 컴포넌트가 렌더링하는 것을 막기<br>
+            * 렌더링 결과를 출력하는 대신 null을 반환하면 해결 가능<br>
+            EX)<WarningBanner />가 warn prop의 값에 의해서 렌더링됨. prop이 false라면 컴포넌트는 렌더링하지 않게 됨.<br>
+            ```jsx
+            function WarningBanner(props) {
+            if (!props.warn) {
+                return null;
+            }
+
+            return (
+                <div className="warning">
+                Warning!
+                </div>
+            );
+            }
+
+            class Page extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {showWarning: true};
+                this.handleToggleClick = this.handleToggleClick.bind(this);
+            }
+
+            handleToggleClick() {
+                this.setState(state => ({
+                showWarning: !state.showWarning
+                }));
+            }
+
+            render() {
+                return (
+                <div>
+                    <WarningBanner warn={this.state.showWarning} />
+                    <button onClick={this.handleToggleClick}>
+                    {this.state.showWarning ? 'Hide' : 'Show'}
+                    </button>
+                </div>
+                );
+            }
+            }
+
+            ReactDOM.render(
+            <Page />,
+            document.getElementById('root')
+            );
+            ```
+        * 컴포넌트의 render 메서드로부터 null을 반환하는 것은 생명주기 메서드 호출에 영향을 주지 않음. 그 예로 componentDidUpdate는 계속해서 호출되게 됨.
 
 
 
